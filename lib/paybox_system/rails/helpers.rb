@@ -5,7 +5,7 @@ module Paybox
         class Error < StandardError; end
 
         protected
-        def check_paybox_integrity!
+        def check_paybox_integrity!(pub_key)
           raise Error, "Bad response" unless params[:error].present? && params[:sign].present?
 
           request_fullpath = request.fullpath
@@ -13,7 +13,7 @@ module Paybox
           request_params = request_fullpath[request_fullpath.index("?")+1..request_fullpath.index("&sign")-1]
           request_sign = request_fullpath[request_fullpath.index("&sign")+6..-1]
 
-          raise Error, "Bad Paybox integrity test" unless Paybox::System::Base.check_response?(request_params, request_sign)
+          raise Error, "Bad Paybox integrity test" unless Paybox::System::Base.check_response?(request_params, request_sign, pub_key)
         end
       end
 
