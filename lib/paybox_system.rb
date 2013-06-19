@@ -42,7 +42,7 @@ module Paybox
         digest = OpenSSL::Digest::SHA1.new
         public_key = OpenSSL::PKey::RSA.new(File.read(File.expand_path(File.dirname(__FILE__) + '/../docs/pubkey.pem')))
 
-        public_key.verify(digest, Base64.decode64(sign), params)
+        public_key.verify(digest, Base64.decode64(Rack::Utils.unescape(sign)), params)
       end
     end
   end
