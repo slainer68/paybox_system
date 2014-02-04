@@ -39,13 +39,22 @@ describe "Paybox::System::Base" do
 
   describe ".check_response?" do
     before(:each) do
+      #Values for paybox public_key
       @paybox_response_params = "reference=id%204f3c497294b3026bfa000001&error=00001"
       @paybox_response_signature = "NuHxwhK%2BENWuXSXeqtGLa2Zezc7ttXvDvCuJa8h4iWXfDSkHCRAYgPazS1Fo%2Fn%2Bk8%2FksD5C6jP0%2Fgf9xQR0JndC0MPKvA6eDeDknEdAsQAriS%2Fk7vjazARAAY1h%2Bt4zROoMVWI8Ph5u%2Bcf6nKuShUOOBuoqyomVphJLKxVMfGtM%3D"
+      @public_key = "-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDe+hkicNP7ROHUssGNtHwiT2Ew
+HFrSk/qwrcq8v5metRtTTFPE/nmzSkRnTs3GMpi57rBdxBBJW5W9cpNyGUh0jNXc
+VrOSClpD5Ri2hER/GcNrxVRP7RlWOqB1C03q4QYmwjHZ+zlM4OUhCCAtSWflB4wC
+Ka1g88CjFwRw/PB9kwIDAQAB
+-----END PUBLIC KEY-----"
     end
 
     it "should verify Paybox response integrity" do
       Paybox::System::Base.should be_check_response(@paybox_response_params, @paybox_response_signature)
       Paybox::System::Base.should_not be_check_response(@paybox_response_params.upcase, @paybox_response_signature)
+      Paybox::System::Base.should be_check_response(@paybox_response_params, @paybox_response_signature, @public_key)
+      Paybox::System::Base.should_not be_check_response(@paybox_response_params.upcase, @paybox_response_signature, @public_key)
     end
   end
 end

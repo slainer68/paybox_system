@@ -38,10 +38,10 @@ module Paybox
         formatted_options
       end
 
-      def self.check_response?(params, sign)
+      def self.check_response?(params, sign, public_key_value=nil)
         digest = OpenSSL::Digest::SHA1.new
-        public_key = OpenSSL::PKey::RSA.new(File.read(File.expand_path(File.dirname(__FILE__) + '/../docs/pubkey.pem')))
-
+        public_key_value ||= File.read(File.expand_path(File.dirname(__FILE__) + '/../docs/pubkey.pem'))
+        public_key = OpenSSL::PKey::RSA.new(public_key_value)
         public_key.verify(digest, Base64.decode64(Rack::Utils.unescape(sign)), params)
       end
     end
