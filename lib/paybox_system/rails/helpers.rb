@@ -23,7 +23,7 @@ module Paybox
           formatted_options = Paybox::System::Base.hash_form_fields_from(opts)
 
           formatted_options.each do |o, v|
-            out << hidden_field_tag(o, Rack::Utils.escape(v))
+            out << hidden_field_tag(o, v)
             out << "\n"
           end
 
